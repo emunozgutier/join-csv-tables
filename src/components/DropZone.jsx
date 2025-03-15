@@ -20,7 +20,17 @@ function DropZone({ dm, setdm }) {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
-    // Handle file drop logic here
+
+    const file = e.dataTransfer.files[0];
+    if (file && file.type === "text/csv") {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const csvString = event.target.result;
+        dm.loadData(csvString);
+        setdm(dm);
+      };
+      reader.readAsText(file);
+    }
   };
 
   return (
@@ -81,4 +91,5 @@ DropZone.propTypes = {
   dm: PropTypes.object.isRequired,
   setdm: PropTypes.func.isRequired,
 };
+
 export default DropZone;
