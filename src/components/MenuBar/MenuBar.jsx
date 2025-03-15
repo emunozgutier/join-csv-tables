@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import HelpWindow from "./HelpWindow.jsx";
 
 function MenuBar({ dm, setdm }) {
@@ -63,6 +64,9 @@ function MenuBar({ dm, setdm }) {
   );
 }
 
-MenuBar.propTypes = {};
+MenuBar.propTypes = {
+  dm: PropTypes.object.isRequired,
+  setdm: PropTypes.func.isRequired,
+};
 
 export default MenuBar;

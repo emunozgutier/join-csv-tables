@@ -14,7 +14,7 @@ function App() {
         <MenuBar dm={dm} setdm={setdm} />
       </div>
       <div className="main-content border flex-grow-1">
-        <DropZone />
+        <DropZone dm={dm} setdm={setdm} />
       </div>
     </div>
   );

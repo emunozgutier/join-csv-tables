@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderOpen, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import PropTypes from "prop-types";
 
-function DropZone() {
+function DropZone({ dm, setdm }) {
   const [isDragging, setIsDragging] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
@@ -76,4 +77,8 @@ function DropZone() {
   );
 }
 
+DropZone.propTypes = {
+  dm: PropTypes.object.isRequired,
+  setdm: PropTypes.func.isRequired,
+};
 export default DropZone;
