@@ -36,6 +36,8 @@ function DropZone({ dm, setdm }) {
       }
     });
 
+    // there is a weird bug where loading the data is not instant
+    // so we need to wait a bit before updating the state
     setTimeout(() => {
       setdm(newDm);
     }, 100);
