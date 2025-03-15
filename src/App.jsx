@@ -4,6 +4,7 @@ import MenuBar from "./components/MenuBar/MenuBar.jsx";
 import DataManager from "./components/DataManager";
 import DropZone from "./components/DropZone.jsx";
 import TableHeaders from "./components/TableHeaders.jsx";
+import SaveCsvTable from "./components/SaveCsvTable.jsx";
 
 function App() {
   const defaultdm = new DataManager(); // Provide a default value
@@ -14,6 +15,7 @@ function App() {
       <div className="">
         <MenuBar dm={dm} setdm={setdm} />
       </div>
+      <SaveCsvTable dm={dm} />
       <TableHeaders dataManager={dm} />
       <div className="main-content border flex-grow-1">
         <DropZone dm={dm} setdm={setdm} />

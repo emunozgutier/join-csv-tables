@@ -4,6 +4,7 @@ class DataManager {
     this.data = null;
     this.empty = true;
     this.lastTimeUpdated = null;
+    this.filenameColumn = "fileName";
   }
 
   loadData(fileName, csvString) {
