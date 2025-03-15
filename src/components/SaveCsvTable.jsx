@@ -1,21 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-function SaveCsvTable({ dm }) {
+function SaveCsvTable({ dm, setdm }) {
   const [filenameColumn, setFilenameColumn] = useState(dm.filenameColumn);
-  const timeoutRef = useRef(null);
 
-  useEffect(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      dm.filenameColumn = filenameColumn;
-      dm.updateFilenameColumn();
-    }, 1000);
-    return () => clearTimeout(timeoutRef.current);
-  }, [filenameColumn, dm]);
+  const handleFilenameColumnChange = (e) => {
+    const newFilenameColumn = e.target.value;
+    setFilenameColumn(newFilenameColumn);
+    dm.filenameColumn = newFilenameColumn;
+    dm.updateFilenameColumn();
+    setdm(dm.clone());
+  };
 
   const handleSave = () => {
     dm.saveData();
@@ -34,7 +29,7 @@ function SaveCsvTable({ dm }) {
           type="text"
           id="filenameColumn"
           value={filenameColumn}
-          onChange={(e) => setFilenameColumn(e.target.value)}
+          onChange={handleFilenameColumnChange}
           className="form-control"
         />
       </div>
@@ -44,6 +39,7 @@ function SaveCsvTable({ dm }) {
 
 SaveCsvTable.propTypes = {
   dm: PropTypes.object.isRequired,
+  setdm: PropTypes.func.isRequired,
 };
 
 export default SaveCsvTable;

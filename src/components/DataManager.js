@@ -22,14 +22,16 @@ class DataManager {
 
     for (const [fileName, dataFrame] of Object.entries(this.fileData)) {
       console.log("fileName:", fileName);
-      console.log("dataFrame:", dataFrame);
-
+      console.log("fileshape:", dataFrame.shape);
       const newColumn = Array(dataFrame.shape[0]).fill(fileName);
       const newDf = dataFrame.copy();
       newDf.addColumn(this.filenameColumn, newColumn, { inplace: true });
 
       if (this.dataUpdated) {
-        this.dataUpdated = this.dataUpdated.append(newDf, { inplace: true });
+        this.dataUpdated = dfd.concat({
+          dfList: [this.dataUpdated, newDf],
+          axis: 0,
+        });
       } else {
         this.dataUpdated = newDf;
       }
@@ -111,6 +113,8 @@ class DataManager {
 
   clone() {
     const newDm = new DataManager();
+    newDm.filenameColumn = this.filenameColumn;
+    newDm.dataUpdated = this.dataUpdated ? this.dataUpdated.copy() : null;
     newDm.fileData = { ...this.fileData };
     newDm.data = this.data ? this.data.copy() : null;
     newDm.empty = this.empty;

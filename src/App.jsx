@@ -15,7 +15,7 @@ function App() {
       <div className="">
         <MenuBar dm={dm} setdm={setdm} />
       </div>
-      <SaveCsvTable dm={dm} />
+      <SaveCsvTable dm={dm} setdm={setdm} />
       <TableHeaders dataManager={dm} />
       <div className="main-content border flex-grow-1">
         <DropZone dm={dm} setdm={setdm} />
