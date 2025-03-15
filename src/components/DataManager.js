@@ -8,15 +8,22 @@ class DataManager {
   }
 
   updateFilenameColumn() {
-    const updatedDataFrames = [];
+    this.dataUpdated = null;
 
     for (const [fileName, dataFrame] of Object.entries(this.fileData)) {
-      const newColumn = Array(dataFrame.shape[0]).fill(fileName);
-      dataFrame.addColumn(this.filenameColumn, newColumn, { inplace: true });
-      updatedDataFrames.push(dataFrame);
-    }
+      console.log("fileName:", fileName);
+      console.log("dataFrame:", dataFrame);
 
-    this.dataUpdated = dfd.concat({ dfList: updatedDataFrames, axis: 0 });
+      const newColumn = Array(dataFrame.shape[0]).fill(fileName);
+      const newDf = dataFrame.copy();
+      newDf.addColumn(this.filenameColumn, newColumn, { inplace: true });
+
+      if (this.dataUpdated) {
+        this.dataUpdated = this.dataUpdated.append(newDf, { inplace: true });
+      } else {
+        this.dataUpdated = newDf;
+      }
+    }
   }
 
   loadData(fileName, csvString) {
