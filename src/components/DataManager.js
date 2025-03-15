@@ -3,6 +3,7 @@ class DataManager {
     this.fileData = {};
     this.data = null;
     this.empty = true;
+    this.lastTimeUpdated = null;
   }
 
   async loadData(fileName, csvString) {

@@ -22,17 +22,20 @@ function DropZone({ dm, setdm }) {
     e.preventDefault();
     setIsDragging(false);
 
-    const file = e.dataTransfer.files[0];
-    if (file && file.type === "text/csv") {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const csvString = event.target.result;
-        const newDm = dm.clone();
-        newDm.loadData(file.name, csvString);
-        setdm(newDm);
-      };
-      reader.readAsText(file);
-    }
+    const files = e.dataTransfer.files;
+    const newDm = dm.clone();
+
+    Array.from(files).forEach((file) => {
+      if (file.type === "text/csv") {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const csvString = event.target.result;
+          newDm.loadData(file.name, csvString);
+          setdm(newDm);
+        };
+        reader.readAsText(file);
+      }
+    });
   };
 
   return (
