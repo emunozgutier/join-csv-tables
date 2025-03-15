@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "fontawesome": "^5.6.3",
+    "prop-types": "^15.8.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-fontawesome": "^1.7.1",
+    "react-tooltip": "^5.28.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
