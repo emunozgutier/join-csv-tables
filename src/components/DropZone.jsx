@@ -31,11 +31,14 @@ function DropZone({ dm, setdm }) {
         reader.onload = (event) => {
           const csvString = event.target.result;
           newDm.loadData(file.name, csvString);
-          setdm(newDm);
         };
         reader.readAsText(file);
       }
     });
+
+    setTimeout(() => {
+      setdm(newDm);
+    }, 100);
   };
 
   return (

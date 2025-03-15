@@ -6,7 +6,7 @@ class DataManager {
     this.lastTimeUpdated = null;
   }
 
-  async loadData(fileName, csvString) {
+  loadData(fileName, csvString) {
     const newData = this.parseCsvString(csvString);
     const newDf = new dfd.DataFrame(newData);
 
@@ -25,6 +25,12 @@ class DataManager {
     } else {
       this.fileData[fileName] = newDf;
     }
+
+    this.updateLastTimeUpdated();
+  }
+
+  updateLastTimeUpdated() {
+    this.lastTimeUpdated = new Date();
   }
 
   parseCsvString(csvString) {
@@ -75,6 +81,7 @@ class DataManager {
     newDm.fileData = { ...this.fileData };
     newDm.data = this.data ? this.data.copy() : null;
     newDm.empty = this.empty;
+    newDm.lastTimeUpdated = this.lastTimeUpdated;
     return newDm;
   }
 }
