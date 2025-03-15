@@ -6,17 +6,7 @@ function TableHeaders({ dataManager }) {
     return null;
   }
 
-  const allHeaders = new Set();
-  const fileHeaders = {};
-
-  // Collect all headers from all files
-  Object.keys(dataManager.getAllData()).forEach((fileName) => {
-    const headers = dataManager.getData(fileName)[0];
-    fileHeaders[fileName] = headers;
-    headers.forEach((header) => allHeaders.add(header));
-  });
-
-  const allHeadersArray = Array.from(allHeaders);
+  const headersPresence = dataManager.getTableHeaders();
 
   return (
     <div
@@ -27,19 +17,17 @@ function TableHeaders({ dataManager }) {
         <thead>
           <tr>
             <th>Header</th>
-            {Object.keys(fileHeaders).map((fileName) => (
+            {Object.keys(dataManager.getAllData()).map((fileName) => (
               <th key={fileName}>{fileName}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {allHeadersArray.map((header) => (
-            <tr key={header}>
-              <td>{header}</td>
-              {Object.keys(fileHeaders).map((fileName) => (
-                <td key={fileName}>
-                  {fileHeaders[fileName].includes(header) ? "✔️" : "❌"}
-                </td>
+          {headersPresence.map((headerPresence) => (
+            <tr key={headerPresence.header}>
+              <td>{headerPresence.header}</td>
+              {Object.keys(dataManager.getAllData()).map((fileName) => (
+                <td key={fileName}>{headerPresence[fileName] ? "✔️" : "❌"}</td>
               ))}
             </tr>
           ))}

@@ -27,7 +27,7 @@ function DropZone({ dm, setdm }) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const csvString = event.target.result;
-        const newDm = new DataManager();
+        const newDm = dm.clone();
         newDm.loadData(file.name, csvString);
         setdm(newDm);
       };

@@ -27,8 +27,18 @@ class DataManager {
   }
 
   parseCsvString(csvString) {
-    const rows = csvString.split("\n");
-    return rows.map((row) => row.split(","));
+    const csv2json = Papa.parse(csvString, {
+      header: true, // Set to true if the first row contains headers
+    });
+
+    // Filter out columns with empty column names
+    var data = csv2json.data.map((row) => {
+      return Object.fromEntries(
+        Object.entries(row).filter(([key]) => key.trim() !== ""),
+      );
+    });
+    data = data.slice(0, -1);
+    return data;
   }
 
   getTableHeaders() {
@@ -57,6 +67,14 @@ class DataManager {
 
   getAllData() {
     return this.fileData;
+  }
+
+  clone() {
+    const newDm = new DataManager();
+    newDm.fileData = { ...this.fileData };
+    newDm.data = this.data ? this.data.copy() : null;
+    newDm.empty = this.empty;
+    return newDm;
   }
 }
 
