@@ -12,6 +12,7 @@ function SaveCsvTable({ dm }) {
 
     timeoutRef.current = setTimeout(() => {
       dm.filenameColumn = filenameColumn;
+      dm.updateFilenameColumn();
     }, 1000);
     return () => clearTimeout(timeoutRef.current);
   }, [filenameColumn, dm]);

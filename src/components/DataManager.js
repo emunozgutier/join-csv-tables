@@ -7,6 +7,18 @@ class DataManager {
     this.filenameColumn = "fileName";
   }
 
+  updateFilenameColumn() {
+    const updatedDataFrames = [];
+
+    for (const [fileName, dataFrame] of Object.entries(this.fileData)) {
+      const newColumn = Array(dataFrame.shape[0]).fill(fileName);
+      dataFrame.addColumn(this.filenameColumn, newColumn, { inplace: true });
+      updatedDataFrames.push(dataFrame);
+    }
+
+    this.dataUpdated = dfd.concat({ dfList: updatedDataFrames, axis: 0 });
+  }
+
   loadData(fileName, csvString) {
     const newData = this.parseCsvString(csvString);
     const newDf = new dfd.DataFrame(newData);
@@ -50,7 +62,11 @@ class DataManager {
   }
 
   getTableHeaders() {
-    const allHeaders = new Set(this.data.columns);
+    if (!this.dataUpdated) {
+      return [];
+    }
+
+    const allHeaders = new Set(this.dataUpdated.columns);
     const fileHeaders = {};
 
     Object.keys(this.fileData).forEach((fileName) => {
@@ -65,7 +81,6 @@ class DataManager {
       });
       return presence;
     });
-
     return headersPresence;
   }
 
