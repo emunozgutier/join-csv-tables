@@ -7,6 +7,16 @@ class DataManager {
     this.filenameColumn = "fileName";
   }
 
+  saveData() {
+    if (this.dataUpdated) {
+      const csvString = dfd.toCSV(this.dataUpdated);
+      const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+      saveAs(blob, "data.csv");
+    } else {
+      console.error("No data available to save.");
+    }
+  }
+
   updateFilenameColumn() {
     this.dataUpdated = null;
 
