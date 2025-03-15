@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderOpen, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import PropTypes from "prop-types";
+import DataManager from "./DataManager";
 
 function DropZone({ dm, setdm }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -26,8 +27,9 @@ function DropZone({ dm, setdm }) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const csvString = event.target.result;
-        dm.loadData(csvString);
-        setdm(dm);
+        const newDm = new DataManager();
+        newDm.loadData(file.name, csvString);
+        setdm(newDm);
       };
       reader.readAsText(file);
     }
@@ -59,7 +61,7 @@ function DropZone({ dm, setdm }) {
           marginBottom: "1rem",
         }}
       >
-        Drop CSV tables here
+        {dm.empty ? "Drop CSV tables here" : "Drop even MORE CSV tables here"}
       </div>
       <div
         className="drop-zone-icon"
