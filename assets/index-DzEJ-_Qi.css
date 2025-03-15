@@ -1,0 +1,1 @@
+.mySectionToFill{display:flex;flex-direction:column}.myFill{flex:1}html{margin:0;padding:0;height:100%}body{margin:0;padding:0;height:100%;float:left;width:100%;overflow:hidden}.fill{min-height:80vh;height:80%}.selected{background-color:#007bff}.table-wrapper{max-height:500px;overflow:auto;display:inline-block}.table-reponsive{max-height:500px;display:inline-block;overflow:auto}
