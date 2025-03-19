@@ -5,6 +5,7 @@ class DataManager {
     this.empty = true;
     this.lastTimeUpdated = null;
     this.filenameColumn = "fileName";
+    this.dataUpdated = null;
   }
 
   saveData() {
@@ -59,6 +60,7 @@ class DataManager {
     }
 
     this.updateLastTimeUpdated();
+    this.updateFilenameColumn();
   }
 
   updateLastTimeUpdated() {
