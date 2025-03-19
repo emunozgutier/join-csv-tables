@@ -1,3 +1,4 @@
+import { saveAs } from "file-saver";
 class DataManager {
   constructor() {
     this.fileData = {};
