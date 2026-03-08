@@ -3,7 +3,7 @@ import "./App.css";
 import MenuBar from "./components/MenuBar/MenuBar.jsx";
 import DataManager from "./components/DataManager";
 import DropZone from "./components/DropZone.jsx";
-import TableHeaders from "./components/TableHeaders.jsx";
+import DataTable from "./components/DataTable.jsx";
 import SaveCsvTable from "./components/SaveCsvTable.jsx";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
         <MenuBar dm={dm} setdm={setdm} />
       </div>
       <SaveCsvTable dm={dm} setdm={setdm} />
-      <TableHeaders dataManager={dm} />
+      <DataTable dataManager={dm} />
       <div className="main-content border flex-grow-1">
         <DropZone dm={dm} setdm={setdm} />
       </div>
