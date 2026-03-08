@@ -11,14 +11,14 @@ function App() {
   const [dm, setdm] = useState(defaultdm);
 
   return (
-    <div className="app-container d-flex flex-column h-100 mx-5">
-      <div className="">
-        <MenuBar dm={dm} setdm={setdm} />
-      </div>
-      <SaveCsvTable dm={dm} setdm={setdm} />
-      <DataTable dataManager={dm} />
-      <div className="main-content border flex-grow-1">
-        <DropZone dm={dm} setdm={setdm} />
+    <div className="app-container d-flex flex-column min-vh-100">
+      <MenuBar dm={dm} setdm={setdm} />
+      <div className="content-wrapper d-flex flex-column gap-4 container-xl">
+        <SaveCsvTable dm={dm} setdm={setdm} />
+        {!dm.empty && <DataTable dataManager={dm} />}
+        <div className="main-content flex-grow-1" style={{ minHeight: "400px" }}>
+          <DropZone dm={dm} setdm={setdm} />
+        </div>
       </div>
     </div>
   );

@@ -45,7 +45,7 @@ function DropZone({ dm, setdm }) {
 
   return (
     <div
-      className={`drop-zone ${isDragging ? "dragging" : ""}`}
+      className={`drop-zone glass-panel ${isDragging ? "animate-pulse-dash" : ""}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -53,33 +53,40 @@ function DropZone({ dm, setdm }) {
         position: "relative",
         width: "100%",
         height: "100%",
-        border: "2px dashed #ccc",
+        border: "2px dashed var(--border)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: isDragging ? "#f0f8ff" : "transparent",
+        backgroundColor: isDragging ? "rgba(79, 70, 229, 0.05)" : "transparent",
         flexDirection: "column",
+        transition: "all 0.3s ease",
+        cursor: "pointer"
       }}
     >
       <div
         className="drop-zone-text"
         style={{
-          fontSize: "1.5rem",
+          fontSize: "1.25rem",
+          fontWeight: "600",
+          color: "var(--text-main)",
           textAlign: "center",
           marginBottom: "1rem",
         }}
       >
-        {dm.empty ? "Drop CSV tables here" : "Drop even MORE CSV tables here"}
+        {dm.empty ? "Drop CSV tables here" : "Plus more CSV tables!"}
       </div>
       <div
         className="drop-zone-icon"
         style={{
           fontSize: "4rem",
-          color: isDragging ? "#0d6efd" : "inherit", // Bootstrap blue color
+          color: isDragging ? "var(--primary)" : "var(--text-muted)",
+          transition: "transform 0.3s ease",
+          transform: isDragging ? "scale(1.1)" : "scale(1)"
         }}
       >
-        <FontAwesomeIcon icon={faFolderOpen} size="4x" />
+        <FontAwesomeIcon icon={faFolderOpen} />
       </div>
+      <p className="text-muted mt-3 small">Accepts .csv files</p>
       {isDragging && (
         <div
           className="drop-zone-plus"
@@ -88,9 +95,10 @@ function DropZone({ dm, setdm }) {
             left: cursorPosition.x,
             top: cursorPosition.y,
             pointerEvents: "none",
+            transform: "translate(-50%, -50%)"
           }}
         >
-          <FontAwesomeIcon icon={faPlusCircle} size="2x" color="green" />
+          <FontAwesomeIcon icon={faPlusCircle} size="2x" color="var(--primary)" />
         </div>
       )}
     </div>

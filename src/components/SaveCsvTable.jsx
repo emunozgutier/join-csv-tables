@@ -17,22 +17,25 @@ function SaveCsvTable({ dm, setdm }) {
   };
 
   return (
-    <div className="save-csv-table row">
-      <div className="form-group col-1 my-2">
-        <button onClick={handleSave} className="btn btn-primary mt-3">
-          Download Csv Table
-        </button>
-      </div>
-      <div className="form-group col-11 my-2">
-        <label htmlFor="filenameColumn">New Column for Filename:</label>
+    <div className="save-csv-table glass-panel p-4 my-2 d-flex align-items-center justify-content-between gap-4">
+      <div className="d-flex align-items-center gap-3 flex-grow-1">
+        <label htmlFor="filenameColumn" className="text-muted fw-semibold mb-0" style={{ whiteSpace: "nowrap" }}>
+          Filename Column:
+        </label>
         <input
           type="text"
           id="filenameColumn"
           value={filenameColumn}
           onChange={handleFilenameColumnChange}
           className="form-control"
+          placeholder="__fileName__"
+          style={{ maxWidth: "300px" }}
         />
       </div>
+      <button onClick={handleSave} className="btn btn-primary d-flex align-items-center gap-2">
+        <i className="fas fa-download"></i>
+        Download Joined CSV
+      </button>
     </div>
   );
 }
