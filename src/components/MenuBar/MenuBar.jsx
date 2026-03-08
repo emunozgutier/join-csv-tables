@@ -7,7 +7,7 @@ function MenuBar({ dm, setdm }) {
     <nav className="navbar navbar-expand-lg navbar-custom px-4 py-3 mb-4 sticky-top shadow-sm">
       <div className="container-fluid">
         <a className="navbar-brand fw-bold text-white" href="#" style={{ fontSize: "1.5rem", letterSpacing: "-0.5px" }}>
-          Join-Csv-Tables
+          join-csv-tables
         </a>
         <button
           className="navbar-toggler border-0 shadow-none"
@@ -21,7 +21,7 @@ function MenuBar({ dm, setdm }) {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul className="navbar-nav ms-auto">
+          <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle fw-medium px-3 text-white"
@@ -55,6 +55,18 @@ function MenuBar({ dm, setdm }) {
                 data-bs-target="#helpModal"
               >
                 Help
+              </a>
+            </li>
+            <li className="nav-item ms-lg-3">
+              <a
+                className="btn btn-outline-light btn-sm d-flex align-items-center gap-2 px-3"
+                href="https://github.com/emunozgutier/join-csv-tables"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ borderRadius: "var(--radius-md)", borderOpacity: 0.3 }}
+              >
+                <i className="bi bi-github"></i>
+                See GitHub
               </a>
             </li>
           </ul>
