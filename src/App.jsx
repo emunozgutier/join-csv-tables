@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import MenuBar from "./components/MenuBar/MenuBar.jsx";
 import DataManager from "./components/DataManager";
 import DropZone from "./components/DropZone.jsx";
 import DataTable from "./components/DataTable.jsx";
 import SaveCsvTable from "./components/SaveCsvTable.jsx";
+import WelcomeModal from "./components/WelcomeModal";
 
 function App() {
-  const defaultdm = new DataManager(); // Provide a default value
+  const defaultdm = new DataManager();
   const [dm, setdm] = useState(defaultdm);
+
+  useEffect(() => {
+    const modalElement = document.getElementById('welcomeModal');
+    if (modalElement && window.bootstrap) {
+      const modal = new window.bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }, []);
 
   return (
     <div className="app-container d-flex flex-column min-vh-100">
@@ -20,6 +29,7 @@ function App() {
           <DropZone dm={dm} setdm={setdm} />
         </div>
       </div>
+      <WelcomeModal />
     </div>
   );
 }
