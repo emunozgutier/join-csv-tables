@@ -5,7 +5,7 @@ class DataManager {
     this.data = null;
     this.empty = true;
     this.lastTimeUpdated = null;
-    this.filenameColumn = "fileName";
+    this.filenameColumn = "__fileName__";
     this.dataUpdated = null;
   }
 
@@ -29,13 +29,20 @@ class DataManager {
       const newDf = dataFrame.copy();
       newDf.addColumn(this.filenameColumn, newColumn, { inplace: true });
 
+      // Reorder columns to make filenameColumn the first column
+      const columns = [
+        this.filenameColumn,
+        ...newDf.columns.filter((c) => c !== this.filenameColumn),
+      ];
+      const reorderedDf = newDf.loc({ columns });
+
       if (this.dataUpdated) {
         this.dataUpdated = dfd.concat({
-          dfList: [this.dataUpdated, newDf],
+          dfList: [this.dataUpdated, reorderedDf],
           axis: 0,
         });
       } else {
-        this.dataUpdated = newDf;
+        this.dataUpdated = reorderedDf;
       }
     }
   }
