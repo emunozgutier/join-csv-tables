@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import MenuBar from "./components/MenuBar/MenuBar.jsx";
 import DataManager from "./components/DataManager";
@@ -10,13 +10,26 @@ import WelcomeModal from "./components/WelcomeModal";
 function App() {
   const defaultdm = new DataManager();
   const [dm, setdm] = useState(defaultdm);
+  const modalRef = useRef(null);
 
   useEffect(() => {
     const modalElement = document.getElementById('welcomeModal');
-    if (modalElement && window.bootstrap) {
-      const modal = new window.bootstrap.Modal(modalElement);
-      modal.show();
+    if (modalElement && window.bootstrap && !modalRef.current) {
+      modalRef.current = new window.bootstrap.Modal(modalElement);
+      modalRef.current.show();
     }
+
+    return () => {
+      if (modalRef.current) {
+        modalRef.current.hide();
+        // Remove backdrops manually if Bootstrap fails to clean up properly in Dev mode
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(b => b.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+      }
+    };
   }, []);
 
   return (
