@@ -1,8 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import HelpWindow from "./HelpWindow.jsx";
+import useStore from "../../store/useStore";
 
-function MenuBar({ dm, setdm }) {
+function MenuBar() {
+  const { dm, setDm } = useStore();
   return (
     <nav className="navbar navbar-expand-lg navbar-custom px-4 py-3 mb-4 sticky-top shadow-sm">
       <div className="container-fluid">
@@ -76,10 +77,5 @@ function MenuBar({ dm, setdm }) {
     </nav>
   );
 }
-
-MenuBar.propTypes = {
-  dm: PropTypes.object.isRequired,
-  setdm: PropTypes.func.isRequired,
-};
 
 export default MenuBar;

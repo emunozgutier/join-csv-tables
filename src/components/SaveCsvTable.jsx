@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
+import useStore from "../store/useStore";
 
-function SaveCsvTable({ dm, setdm }) {
+function SaveCsvTable() {
+  const { dm, setDm } = useStore();
   const [filenameColumn, setFilenameColumn] = useState(dm.filenameColumn);
 
   const handleFilenameColumnChange = (e) => {
@@ -9,7 +10,7 @@ function SaveCsvTable({ dm, setdm }) {
     setFilenameColumn(newFilenameColumn);
     dm.filenameColumn = newFilenameColumn;
     dm.updateFilenameColumn();
-    setdm(dm.clone());
+    setDm(dm.clone());
   };
 
   const handleSave = () => {
@@ -39,10 +40,5 @@ function SaveCsvTable({ dm, setdm }) {
     </div>
   );
 }
-
-SaveCsvTable.propTypes = {
-  dm: PropTypes.object.isRequired,
-  setdm: PropTypes.func.isRequired,
-};
 
 export default SaveCsvTable;

@@ -1,7 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
+import useStore from "../store/useStore";
 
-function DataTable({ dataManager }) {
+function DataTable() {
+    const { dm: dataManager } = useStore();
     if (dataManager.empty || !dataManager.dataUpdated) {
         return null;
     }
@@ -49,9 +50,5 @@ function DataTable({ dataManager }) {
         </div>
     );
 }
-
-DataTable.propTypes = {
-    dataManager: PropTypes.object.isRequired,
-};
 
 export default DataTable;
