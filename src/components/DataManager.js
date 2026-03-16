@@ -5,7 +5,6 @@ class DataManager {
     this.data = null;
     this.empty = true;
     this.lastTimeUpdated = null;
-    this.filenameColumn = "__fileName__";
     this.dataUpdated = null;
   }
 
@@ -22,24 +21,27 @@ class DataManager {
   updateFilenameColumn() {
     this.dataUpdated = null;
 
+    const metadataColumns = ["FullFileName", "FolderName", "FileName"];
+
     for (const [tableName, dataFrame] of Object.entries(this.fileData)) {
-      // If the dataframe already has the filenameColumn (from loadData), we don't overwrite it
-      // This preserves the original source paths even within merged tables.
-      let newDf;
-      if (!dataFrame.columns.includes(this.filenameColumn)) {
-        const newColumn = Array(dataFrame.shape[0]).fill(tableName);
+      let newDf = dataFrame;
+      
+      // If the dataframe doesn't have the metadata columns, add them (fallback)
+      if (!metadataColumns.every(col => dataFrame.columns.includes(col))) {
         newDf = dataFrame.copy();
-        newDf.addColumn(this.filenameColumn, newColumn, { inplace: true });
-      } else {
-        newDf = dataFrame;
+        const fullPath = tableName;
+        const lastSlashIndex = fullPath.lastIndexOf("/");
+        const folder = lastSlashIndex !== -1 ? fullPath.substring(0, lastSlashIndex) : "";
+        const file = lastSlashIndex !== -1 ? fullPath.substring(lastSlashIndex + 1) : fullPath;
+
+        newDf.addColumn("FullFileName", Array(newDf.shape[0]).fill(fullPath), { inplace: true });
+        newDf.addColumn("FolderName", Array(newDf.shape[0]).fill(folder), { inplace: true });
+        newDf.addColumn("FileName", Array(newDf.shape[0]).fill(file), { inplace: true });
       }
 
-      // Reorder columns to make filenameColumn the first column
-      const columns = [
-        this.filenameColumn,
-        ...newDf.columns.filter((c) => c !== this.filenameColumn),
-      ];
-      const reorderedDf = newDf.loc({ columns });
+      // Reorder columns to make metadata columns the first ones
+      const otherColumns = newDf.columns.filter((c) => !metadataColumns.includes(c));
+      const reorderedDf = newDf.loc({ columns: [...metadataColumns, ...otherColumns] });
 
       if (this.dataUpdated) {
         this.dataUpdated = dfd.concat({
@@ -56,10 +58,15 @@ class DataManager {
     const newData = this.parseCsvString(csvString);
     const newDf = new dfd.DataFrame(newData);
     
-    // Add sourcePath column BEFORE concatenation to preserve it per row
-    const pathToAdd = sourcePath || tableName;
-    const pathColumn = Array(newDf.shape[0]).fill(pathToAdd);
-    newDf.addColumn(this.filenameColumn, pathColumn, { inplace: true });
+    // Add metadata columns BEFORE concatenation to preserve them per row
+    const fullPath = sourcePath || tableName;
+    const lastSlashIndex = fullPath.lastIndexOf("/");
+    const folder = lastSlashIndex !== -1 ? fullPath.substring(0, lastSlashIndex) : "";
+    const file = lastSlashIndex !== -1 ? fullPath.substring(lastSlashIndex + 1) : fullPath;
+
+    newDf.addColumn("FullFileName", Array(newDf.shape[0]).fill(fullPath), { inplace: true });
+    newDf.addColumn("FolderName", Array(newDf.shape[0]).fill(folder), { inplace: true });
+    newDf.addColumn("FileName", Array(newDf.shape[0]).fill(file), { inplace: true });
 
     if (this.empty) {
       this.data = newDf;
@@ -133,7 +140,6 @@ class DataManager {
 
   clone() {
     const newDm = new DataManager();
-    newDm.filenameColumn = this.filenameColumn;
     newDm.dataUpdated = this.dataUpdated ? this.dataUpdated.copy() : null;
     newDm.fileData = { ...this.fileData };
     newDm.data = this.data ? this.data.copy() : null;

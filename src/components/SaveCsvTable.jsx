@@ -2,16 +2,7 @@ import React, { useState } from "react";
 import useStore from "../store/useStore";
 
 function SaveCsvTable() {
-  const { dm, setDm } = useStore();
-  const [filenameColumn, setFilenameColumn] = useState(dm.filenameColumn);
-
-  const handleFilenameColumnChange = (e) => {
-    const newFilenameColumn = e.target.value;
-    setFilenameColumn(newFilenameColumn);
-    dm.filenameColumn = newFilenameColumn;
-    dm.updateFilenameColumn();
-    setDm(dm.clone());
-  };
+  const { dm } = useStore();
 
   const handleSave = () => {
     dm.saveData();
@@ -20,18 +11,9 @@ function SaveCsvTable() {
   return (
     <div className="save-csv-table glass-panel p-4 my-2 d-flex align-items-center justify-content-between gap-4">
       <div className="d-flex align-items-center gap-3 flex-grow-1">
-        <label htmlFor="filenameColumn" className="text-muted fw-semibold mb-0" style={{ whiteSpace: "nowrap" }}>
-          Filename Column:
-        </label>
-        <input
-          type="text"
-          id="filenameColumn"
-          value={filenameColumn}
-          onChange={handleFilenameColumnChange}
-          className="form-control"
-          placeholder="__fileName__"
-          style={{ maxWidth: "300px" }}
-        />
+        <span className="text-muted small">
+          Includes <strong>FullFileName</strong>, <strong>FolderName</strong>, and <strong>FileName</strong> columns.
+        </span>
       </div>
       <button onClick={handleSave} className="btn btn-primary d-flex align-items-center gap-2">
         <i className="fas fa-download"></i>

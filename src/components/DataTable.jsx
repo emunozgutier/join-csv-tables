@@ -33,15 +33,19 @@ function DataTable() {
                     <tbody>
                         {data.map((row, i) => (
                             <tr key={i}>
-                                {columns.map((col) => (
-                                    <td key={col} style={{
-                                        color: col === "__fileName__" ? "var(--primary)" : "inherit",
-                                        fontWeight: col === "__fileName__" ? "500" : "400",
-                                        fontSize: "0.9rem"
-                                    }}>
-                                        {row[col]}
-                                    </td>
-                                ))}
+                                {columns.map((col) => {
+                                    const isMetadata = ["FullFileName", "FolderName", "FileName"].includes(col);
+                                    return (
+                                        <td key={col} style={{
+                                            color: isMetadata ? "var(--primary)" : "inherit",
+                                            fontWeight: isMetadata ? "500" : "400",
+                                            fontSize: "0.9rem",
+                                            whiteSpace: isMetadata ? "nowrap" : "normal"
+                                        }}>
+                                            {row[col]}
+                                        </td>
+                                    );
+                                })}
                             </tr>
                         ))}
                     </tbody>
