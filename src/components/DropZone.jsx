@@ -70,7 +70,9 @@ function DropZone() {
     if (duplicateNames.length > 0) {
       setConflictsData(grouped, duplicateNames);
     } else {
-      loadFiles(allFiles);
+      // Ensure sourcePath is provided even for non-conflicting files
+      const filesToLoad = allFiles.map(f => ({ ...f, sourcePath: f.name }));
+      loadFiles(filesToLoad);
     }
   };
 

@@ -48,9 +48,11 @@ function App() {
       const shouldAppend = appendChoices[originalName] !== false;
 
       if (shouldAppend) {
-        files.forEach(f => allFilesToProcess.push({ ...f, name: originalName }));
+        // Use originalName for grouping, but keep the path-based f.name as sourcePath
+        files.forEach(f => allFilesToProcess.push({ ...f, name: originalName, sourcePath: f.name }));
       } else {
-        files.forEach(f => allFilesToProcess.push(f));
+        // Use path-based f.name for both
+        files.forEach(f => allFilesToProcess.push({ ...f, name: f.name, sourcePath: f.name }));
       }
     });
 
@@ -71,13 +73,13 @@ function App() {
       <WelcomeModal />
       
       <Popup isOpen={conflicts.length > 0} onClose={clearConflicts}>
-        <div className="text-center mb-4">
-          <h2 className="mb-2" style={{ fontWeight: "700", letterSpacing: "-0.01em" }}>Conflict Resolution</h2>
-          <p className="text-muted">We found duplicate filenames across your folders. Choose how to handle them.</p>
+        <div className="text-center mb-3">
+          <h2 className="mb-1" style={{ fontWeight: "700", letterSpacing: "-0.01em" }}>Conflict Resolution</h2>
+          <p className="text-muted small">We found duplicate filenames across your folders. Choose how to handle them.</p>
         </div>
         
         <div 
-          className="conflict-list flex-grow-1 mb-4 ms-n2 me-n2 px-2" 
+          className="conflict-list flex-grow-1 mb-3 ms-n2 me-n2 px-2" 
           style={{ 
             overflowY: "auto",
             minHeight: "200px"
@@ -86,11 +88,11 @@ function App() {
           {conflicts.map(name => (
             <div 
               key={name} 
-              className="d-flex align-items-center justify-content-between p-3 mb-3"
+              className="d-flex align-items-center justify-content-between p-2 mb-2"
               style={{ 
                 backgroundColor: "rgba(255,255,255,0.03)", 
                 border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "1rem"
+                borderRadius: "0.75rem"
               }}
             >
               <div className="d-flex align-items-center flex-grow-1">
@@ -103,33 +105,33 @@ function App() {
                     onChange={() => toggleAppendChoice(name)}
                     style={{ 
                       cursor: "pointer", 
-                      width: "1.75rem", 
-                      height: "1.75rem",
+                      width: "1.25rem", 
+                      height: "1.25rem",
                       backgroundColor: appendChoices[name] ? "var(--primary)" : "transparent",
                       borderColor: "rgba(255,255,255,0.2)"
                     }}
                   />
                 </div>
-                <div className="ms-4">
-                  <div style={{ fontSize: "1.1rem", fontWeight: "600" }}>{name}</div>
-                  <div className="text-muted small">
+                <div className="ms-3">
+                  <div style={{ fontSize: "1rem", fontWeight: "600" }}>{name}</div>
+                  <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                     {pendingFiles[name].length} files: {pendingFiles[name].map(f => f.name).join(", ")}
                   </div>
                 </div>
               </div>
-              <div className="ms-3 text-end" style={{ minWidth: "140px" }}>
+              <div className="ms-3 text-end" style={{ minWidth: "130px" }}>
                 <span 
-                  className="badge px-3 py-2" 
+                  className="badge px-2 py-1.5" 
                   style={{ 
                     borderRadius: "2rem",
                     backgroundColor: appendChoices[name] ? "rgba(79, 70, 229, 0.2)" : "rgba(255,255,255,0.05)",
                     color: appendChoices[name] ? "#818cf8" : "#94a3b8",
                     border: `1px solid ${appendChoices[name] ? "rgba(99, 102, 241, 0.3)" : "rgba(255,255,255,0.1)"}`,
-                    fontSize: "0.85rem",
+                    fontSize: "0.75rem",
                     fontWeight: "600"
                   }}
                 >
-                  {appendChoices[name] ? 'Merge & Append' : 'Keep Separate (by path)'}
+                  {appendChoices[name] ? 'Merge' : 'Separate'}
                 </span>
               </div>
             </div>

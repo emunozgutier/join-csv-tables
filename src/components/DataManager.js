@@ -22,12 +22,17 @@ class DataManager {
   updateFilenameColumn() {
     this.dataUpdated = null;
 
-    for (const [fileName, dataFrame] of Object.entries(this.fileData)) {
-      console.log("fileName:", fileName);
-      console.log("fileshape:", dataFrame.shape);
-      const newColumn = Array(dataFrame.shape[0]).fill(fileName);
-      const newDf = dataFrame.copy();
-      newDf.addColumn(this.filenameColumn, newColumn, { inplace: true });
+    for (const [tableName, dataFrame] of Object.entries(this.fileData)) {
+      // If the dataframe already has the filenameColumn (from loadData), we don't overwrite it
+      // This preserves the original source paths even within merged tables.
+      let newDf;
+      if (!dataFrame.columns.includes(this.filenameColumn)) {
+        const newColumn = Array(dataFrame.shape[0]).fill(tableName);
+        newDf = dataFrame.copy();
+        newDf.addColumn(this.filenameColumn, newColumn, { inplace: true });
+      } else {
+        newDf = dataFrame;
+      }
 
       // Reorder columns to make filenameColumn the first column
       const columns = [
@@ -47,9 +52,14 @@ class DataManager {
     }
   }
 
-  loadData(fileName, csvString) {
+  loadData(tableName, csvString, sourcePath = null) {
     const newData = this.parseCsvString(csvString);
     const newDf = new dfd.DataFrame(newData);
+    
+    // Add sourcePath column BEFORE concatenation to preserve it per row
+    const pathToAdd = sourcePath || tableName;
+    const pathColumn = Array(newDf.shape[0]).fill(pathToAdd);
+    newDf.addColumn(this.filenameColumn, pathColumn, { inplace: true });
 
     if (this.empty) {
       this.data = newDf;
@@ -58,13 +68,13 @@ class DataManager {
       this.data = dfd.concat({ dfList: [this.data, newDf], axis: 0 });
     }
 
-    if (this.fileData[fileName]) {
-      this.fileData[fileName] = dfd.concat({
-        dfList: [this.fileData[fileName], newDf],
+    if (this.fileData[tableName]) {
+      this.fileData[tableName] = dfd.concat({
+        dfList: [this.fileData[tableName], newDf],
         axis: 0,
       });
     } else {
-      this.fileData[fileName] = newDf;
+      this.fileData[tableName] = newDf;
     }
 
     this.updateLastTimeUpdated();

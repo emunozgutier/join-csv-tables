@@ -97,9 +97,13 @@ const useStore = create((set) => ({
 
     for (const item of fileItems) {
       const file = item.file || item;
-      const name = item.name || file.name;
+      // tableName is the group name or the specific path if separate
+      const tableName = item.name || file.name;
+      // sourcePath is the specific full path regardless of grouping
+      const sourcePath = item.sourcePath || item.name || file.name;
+      
       const csvString = await readAsText(file);
-      newDm.loadData(name, csvString);
+      newDm.loadData(tableName, csvString, sourcePath);
     }
     
     set({ dm: newDm });
